@@ -1,9 +1,37 @@
 <script setup>
 import { Sun, CircleAlert, Plus } from 'lucide-vue-next';
+import { uid } from 'uid';
 
+
+const route = useRoute()
+const router = useRouter()
 const modalActive = ref(null)
 const toggleModule = () => {
     modalActive.value = !modalActive.value
+}
+
+const savedCities = ref([])
+
+const addCity = () => {
+    if (localStorage.getItem('savedCities')) {
+        savedCities.value = JSON.parse(localStorage.getItem('savedCities'))
+    }
+
+    const locationInfo = {
+        id: uid(),
+        city: route.params.id,
+        coords: {
+            lat: route.query.lat,
+            lng: route.query.lng
+        }
+    }
+
+    savedCities.value.push(locationInfo)
+    localStorage.setItem('savedCities', JSON.stringify(savedCities.value))
+
+    let query = Object.assign({}, route.query)
+    delete query.preview
+    router.replace({query})
 }
 
 </script>
@@ -18,7 +46,7 @@ const toggleModule = () => {
             <div @click="toggleModule">
                 <CircleAlert />
             </div>
-            <div>
+            <div @click="addCity">
                 <Plus />
             </div>
         </div>

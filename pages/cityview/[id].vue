@@ -4,11 +4,11 @@ import { useRoute } from 'vue-router'
 
 // Reactive variables
 const route = useRoute()
-const weatherData = ref(null) // Holds weather data
-const loading = ref(true) // Tracks loading state
-const error = ref(null) // Tracks errors
+const weatherData = ref(null)
+const loading = ref(true)
+const error = ref(null) 
 
-// API key (should ideally be in .env)
+
 const API_KEY = '687ef0bc53f11d315c123a4ce18647a4'
 
 
@@ -66,7 +66,10 @@ const computedWeatherData = computed(() => {
 
 <template>
     <div>
-        <p>City View</p>
+        <div class="w-full text-center py-4 mt-6 bg-gray-100 text-black"
+         v-if="route.query.preview">
+            <p>You are currently viewing this city. Click the "+" icon to start tracking it.</p>
+        </div>
         <!-- Show loading state -->
         <div v-if="loading">Loading weather data...</div>
 

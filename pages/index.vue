@@ -62,7 +62,7 @@ const getSearchResults = () => {
             <template v-else>
                 <div class="bg-gray-100 p-2" v-if="searchQuery">
                     <NuxtLink :to="{ path: `/cityview/${place.place_name.replaceAll(' ', '')}`,
-                     query: { lat: place.geometry.coordinates[1], lng: place.geometry.coordinates[0]} }"
+                     query: { lat: place.geometry.coordinates[1], lng: place.geometry.coordinates[0], preview: true} }"
                      v-for="place in results"
                         :key="place.id" class="leading-8 cursor-pointer">
                         <p>{{ place.place_name }}</p>
@@ -70,6 +70,7 @@ const getSearchResults = () => {
                 </div>
             </template>
         </div>
+        <CityList/>
     </div>
 </template>
 
