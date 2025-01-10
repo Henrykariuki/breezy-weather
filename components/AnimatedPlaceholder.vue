@@ -4,12 +4,12 @@
 
 <template>
     <div>
-        <MyHeader />
-        <div class="text-white">
-            <slot />
+        <div class="bg-gradient-to-r from-gray-100 animate-pulse">
+            &nbsp;
         </div>
     </div>
 </template>
 
 <style scoped>
+
 </style>

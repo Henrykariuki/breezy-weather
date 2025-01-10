@@ -31,6 +31,7 @@ const addCity = () => {
 
     let query = Object.assign({}, route.query)
     delete query.preview
+    query.id = locationInfo.id
     router.replace({query})
 }
 
@@ -40,13 +41,13 @@ const addCity = () => {
     <div class="text-white flex justify-around py-4 relative" style="box-shadow: 0 4px 10px rgba(0, 0, 0, 0.8);">
         <div class="flex flex-row gap-2">
             <Sun />
-            <p>Breezy Weather</p>
+            <NuxtLink to="/">Breezy Weather</NuxtLink>
         </div>
         <div class="flex flex-row gap-2">
             <div @click="toggleModule">
                 <CircleAlert />
             </div>
-            <div @click="addCity">
+            <div v-if="route.query.preview" @click="addCity">
                 <Plus />
             </div>
         </div>

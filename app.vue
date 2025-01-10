@@ -3,10 +3,10 @@
 </script>
 
 <template>
-  <div>
-    <NuxtLoadingIndicator/>
+  <div class="bg-[#808080]">
+    <NuxtLoadingIndicator />
     <NuxtLayout>
-      <NuxtPage/>
+      <NuxtPage />
     </NuxtLayout>
   </div>
 </template>
