@@ -47,7 +47,7 @@ const getCities = async () => {
   isLoading.value = false;
 };
 
-// Fetch cities data after the component is mounted
+
 getCities();
 
 
@@ -56,7 +56,9 @@ getCities();
 <template>
   <div class="mx-6">
     <!-- Show a loader while fetching data -->
-    <div v-if="isLoading">Loading cities...</div>
+    <div v-if="isLoading">
+      <CitycardSkeleton/>
+    </div>
     <div v-else>
       <NuxtLink :to="{ path: `/cityview/${city.weather.name}`,
          query: { 

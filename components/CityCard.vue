@@ -17,7 +17,7 @@ const minTempInCelcius = (city) => city.weather.main.temp_min - 273.15
         <div class="flex items-center">
             <p>{{ city.city }}</p>
         </div>
-        <div>
+        <div class="flex flex-col items-end">
             <div class=" text-lg mb-2">
                 <p>{{ Math.round(tempInCelcius(city)) }}°</p>
             </div>
