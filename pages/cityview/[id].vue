@@ -52,7 +52,8 @@ const computedWeatherData = computed(() => {
 })
 
 const router = useRouter()
-const removeCity = () => {
+
+if (process.client) {const removeCity = () => {
     const savedCities = JSON.parse(localStorage.getItem('savedCities'));
 
     // Log the current state of saved cities
@@ -84,7 +85,7 @@ const removeCity = () => {
 
     // Redirect the user to the home page
     router.push('/');
-};
+}}
 
 </script>
 
