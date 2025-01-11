@@ -1,35 +1,22 @@
 <script setup>
+import { data } from 'autoprefixer'
 import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
 
-// Reactive variables
 const route = useRoute()
-const weatherData = ref(null)
-const loading = ref(true)
-const error = ref(null) 
-
 
 const API_KEY = '687ef0bc53f11d315c123a4ce18647a4'
+const { data: weatherData, status, error } = await useFetch(
+    `https://api.openweathermap.org/data/2.5/weather?lat=${route.query.lat}&lon=${route.query.lng}&appid=${API_KEY}`
+)
 
+const ShowSkeleton = ref(true)
 
-// Fetch weather data
-const fetchWeatherData = async () => {
-    try {
-        const { data } = await useFetch(
-            `https://api.openweathermap.org/data/2.5/weather?lat=${route.query.lat}&lon=${route.query.lng}&appid=${API_KEY}`
-        )
-        weatherData.value = data.value
-        console.log(weatherData)
-    } catch (err) {
-        error.value = 'Failed to fetch weather data. Please try again.'
-        console.error(err)
-    } finally {
-        loading.value = false
-    }
-}
+//Set a delay to display skeleton for a minum time
+setTimeout(() => {
+    ShowSkeleton.value = false
+}, 1000)
 
-// Call the function on setup
-await fetchWeatherData()
 
 // Computed: Add calculated times to the weather data
 const computedWeatherData = computed(() => {
@@ -49,7 +36,7 @@ const computedWeatherData = computed(() => {
     const localTime = new Date(utcTime + timezoneOffset)
 
     // convert temperatures from kelvin to celcius 
-    const temperatureInCelcius = weatherData.value.main.temp - 273.15  
+    const temperatureInCelcius = weatherData.value.main.temp - 273.15
     const feelsLikeInCelcius = weatherData.value.main.feels_like - 273.15
 
     return {
@@ -99,7 +86,6 @@ const removeCity = () => {
     router.push('/');
 };
 
-
 </script>
 
 <template>
@@ -108,13 +94,16 @@ const removeCity = () => {
             <p>You are currently viewing this city. Click the "+" icon to start tracking it.</p>
         </div>
         <!-- Show loading state -->
-        <div v-if="loading">Loading weather data...</div>
+        <div v-if="ShowSkeleton">
+            <CityViewSkeleton />
+        </div>
 
         <!-- Show error if exists -->
-        <div v-else-if="error">{{ error }}</div>
+        <div v-if="error">{{ error }}</div>
 
         <!-- Show weather data -->
-        <div class="border-b border-slate-200  flex items-center flex-col gap-4" v-else-if="computedWeatherData">
+        <div class="border-b border-slate-200  flex items-center flex-col gap-4"
+         v-else-if="computedWeatherData && !ShowSkeleton">
             <p class="text-xl font-semibold">{{ computedWeatherData.cityName }}</p>
             <p class="text-sm">{{ computedWeatherData.localTime.toLocaleString() }}</p>
             <p class="text-7xl font-semibold">{{ Math.round(computedWeatherData.temperature) }}°</p>
