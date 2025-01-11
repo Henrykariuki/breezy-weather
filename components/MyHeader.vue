@@ -12,8 +12,8 @@ const toggleModule = () => {
 
 const savedCities = ref([])
 
-if (process.client) {const addCity = () => {
-    if (localStorage.getItem('savedCities')) {
+const addCity = () => {
+    if (import.meta.client && localStorage.getItem('savedCities')) {
         savedCities.value = JSON.parse(localStorage.getItem('savedCities'))
     }
 
@@ -33,7 +33,7 @@ if (process.client) {const addCity = () => {
     delete query.preview
     query.id = locationInfo.id
     router.replace({query})
-}}
+}
 
 </script>
 

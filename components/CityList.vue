@@ -69,7 +69,7 @@ getCities();
         <CityCard :city="city" />
       </NuxtLink>
       <!-- Display a message if no valid cities are found -->
-      <div v-if="!SavedCities.length">No valid cities found.</div>
+      <div class="text-white" v-if="!SavedCities.length">No valid cities found.</div>
     </div>
   </div>
 </template>

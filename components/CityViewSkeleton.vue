@@ -5,7 +5,7 @@ import AnimatedPlaceholder from './AnimatedPlaceholder.vue';
 </script>
 
 <template>
-    <div class="border-b border-slate-200  flex items-center flex-col gap-4">
+    <div class="border-b border-slate-200 pb-4 flex items-center flex-col gap-4">
         <div>
             <AnimatedPlaceholder class="w-[100px]" />
         </div>
