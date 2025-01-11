@@ -12,7 +12,7 @@ const SavedCities = ref([]);
 const isLoading = ref(true);
 
 const getCities = async () => {
-  if (localStorage.getItem('savedCities')) {
+  if (import.meta.client && localStorage.getItem('savedCities')) {
     SavedCities.value = JSON.parse(localStorage.getItem('savedCities'));
   }
 
