@@ -54,7 +54,7 @@ getCities();
 </script>
 
 <template>
-  <div class="mx-6">
+  <div class="mx-6 h-screen">
     <!-- Show a loader while fetching data -->
     <div v-if="isLoading">
       <CitycardSkeleton/>

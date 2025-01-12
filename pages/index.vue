@@ -69,7 +69,7 @@ const getSearchResults = () => {
                 </div>
             </template>
         </div>
-        <div class="h-screen">
+        <div >
             <CityList />
         </div>
     </div>
