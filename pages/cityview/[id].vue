@@ -50,7 +50,7 @@ const computedWeatherData = computed(() => {
         const localTime = new Date(utcTime + 1000 * weatherData.value.timezone_offset);
 
         return {
-            time: localTime.toLocaleTimeString("en-us", { hour: '2-digit', hour12: true }),
+            time: localTime.toLocaleTimeString("en-us", { hour: '2-digit', hour12: false }),
             temperature: (hour.temp - 273.15),
             icon: `https://openweathermap.org/img/wn/${hour.weather[0].icon}@2x.png`,
             description: hour.weather[0].description,
@@ -138,57 +138,38 @@ console.log(weatherData)
 </script>
 
 <template>
-    <div class="pt-8 ">
-        <div class="w-full text-center py-4 mt-6 bg-gray-100 text-black" v-if="route.query.preview">
-            <p>You are currently viewing this city. Click the "+" icon to start tracking it.</p>
-        </div>
-        <!-- Show loading state -->
-        <div v-if="ShowSkeleton">
-            <CityViewSkeleton />
-        </div>
-
-        <!-- Show error if exists -->
-        <div v-if="error">{{ error }}</div>
-
-        <!-- Show weather data -->
-        <div class="border-b border-slate-200  flex items-center flex-col gap-4"
-            v-else-if="computedWeatherData && !ShowSkeleton">
-            <p class="text-xl font-semibold">{{ route.params.id }}</p>
-            <!--Time and date-->
-            <p class="text-sm">{{ computedWeatherData.formattedDate }}, {{ computedWeatherData.formattedTime }}</p>
-            <p class="text-7xl font-semibold">{{ Math.round(computedWeatherData.temperature) }}°</p>
-            <div class="text-sm flex flex-col items-center gap-4">
-                <div class="flex flex-col items-center">
-                    <p>Feels like {{ Math.round(computedWeatherData.feelsLike) }}°</p>
-                    <p>{{ computedWeatherData.weatherDescription }}</p>
-                </div>
-                <div class="flex flex-col items-center">
-                    <p>Wind speed: {{ computedWeatherData.windSpeed }} m/s</p>
-                    <p>Humidity: {{ computedWeatherData.humidity }}%</p>
+    <div class=" grid grid-cols-4 bg-[url('/images/pexels02.jpg')] bg-cover bg-center">
+        <div class="col-span-3 p-5 flex justify-center items-end ">
+            <div class=" py-5 border border-black flex flex-row gap-4 overflow-x-auto">
+                <h2 class="text-lg font-bold mb-4">Hourly Forecast</h2>
+                <div class="flex flex-col gap-1 items-center py-2 px-3 bg-white/10 backdrop-blur-sm rounded-md"
+                 v-for="hour in computedWeatherData.hourly" :key="hour.time">
+                    <p class="text-sm">{{ hour.time }}</p>
+                    <img class="w-[50px]" :src="hour.icon" :alt="hour.description">
+                    <p class="text-sm font-semibold">{{ Math.round(hour.temperature) }}°C</p>
                 </div>
             </div>
-            <div class="object-cover">
-                <img class="w-[150px]" :src="computedWeatherData.iconUrl" :alt="computedWeatherData.weatherDescription">
-            </div>
-            <div class="hover:text-red-500 mb-4 text-lg duration-150" @click="removeCity">Remove city</div>
         </div>
-        <div class="border border-black">
-            <h2 class="text-lg font-bold mb-4">Hourly Forecast</h2>
-            <div v-for="hour in computedWeatherData.hourly" :key="hour.time">
-                <p class="text-sm">{{ hour.time }}</p>
-                <img class="w-[50px]" :src="hour.icon" :alt="hour.description">
-                <p class="text-sm font-semibold">{{ Math.round(hour.temperature) }}°C</p>
-                <p class="text-xs">{{ hour.description }}</p>
+        <div class=" border border-black backdrop-blur-sm bg-white/10">
+            <div class="flex flex-col items-center justify-center border border-slate-300 h-40">
+                <p class="text-7xl ">{{ Math.round(computedWeatherData.temperature)}}°C</p>
+                <p class="text-sm font-semibold"> Feels Like: {{ Math.round(computedWeatherData.feelsLike) }}</p>
             </div>
-        </div>
-        <div class="border border-black">
-            <h2>Daily Forcast</h2>
-            <div v-for="day in computedWeatherData.daily" :key="data.time">
-                <p class="text-sm">{{ day.time }}</p>
-                <p class="text-sm font-semibold">{{ Math.round(day.maxTemp) }}°C</p>
-                <p class="text-sm font-semibold">{{ Math.round(day.minTemp) }}°C</p>
-                <img class="w-[50px]" :src="day.icon" :alt="day.description">
-                <p class="text-sm">{{ day.description }}</p>
+            <div class="flex flex-col gap-5 items-center h-[500px] overflow-y-auto">
+                <h2 class="font-semibold">Daily Forecast</h2>
+                <div class="flex flex-row gap-4" v-for="day in computedWeatherData.daily" :key="data.time">
+                    <div class=" rounded-md backdrop-blur-sm bg-white/10">
+                        <img class="w-[50px]" :src="day.icon" :alt="day.description">
+                    </div>
+                    <div class="text-start w-40">
+                        <p class="text-sm">{{ day.time }}</p>
+                        <p class="text-sm">{{ day.description }}</p>
+                    </div>
+                    <div class="border-l px-2 border-slate-300">
+                        <p class="text-sm font-semibold">{{ Math.round(day.maxTemp) }}°</p>
+                        <p class="text-sm font-semibold">{{ Math.round(day.minTemp) }}°</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
