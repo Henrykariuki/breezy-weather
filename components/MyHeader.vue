@@ -38,7 +38,8 @@ const addCity = () => {
 </script>
 
 <template>
-    <div class="text-white flex justify-around py-4 relative" style="box-shadow: 0 4px 10px rgba(0, 0, 0, 0.8);">
+    <div class="text-white flex justify-around py-4 relative  bg-black"
+        style="box-shadow: 0 4px 10px rgba(0, 0, 0, 0.8);">
         <div class="flex flex-row gap-2">
             <Sun />
             <NuxtLink to="/">Breezy Weather</NuxtLink>
@@ -51,7 +52,7 @@ const addCity = () => {
                 <Plus />
             </div>
         </div>
-        <div class="absolute bg-white rounded-sm top-32 text-black ">
+        <div class="absolute rounded-sm top-32 text-black z-50 bg-white/20 backdrop-blur-sm">
             <AboutModal :modalActive="modalActive" @closeModal="toggleModule">
                 <div>
                     <div>

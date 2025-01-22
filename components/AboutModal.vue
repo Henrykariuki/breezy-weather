@@ -14,8 +14,8 @@ defineProps({
             <Transition name="modal-inner">
                 <div v-if="modalActive">
                     <slot />
-                    <button class="bg-[#808080] py-1 px-4 text-white mt-4 rounded-sm"
-                     @click="$emit('closeModal')">
+                    <button class="bg-white/20 backdrop-blur-sm py-1 px-4 text-black mt-4 rounded-sm"
+                        @click="$emit('closeModal')">
                         Close
                     </button>
                 </div>

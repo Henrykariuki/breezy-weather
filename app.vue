@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <div class="bg-[#808080]">
+  <div >
     <NuxtLoadingIndicator />
     <NuxtLayout>
       <Transition name="page">

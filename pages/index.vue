@@ -46,10 +46,10 @@ const getSearchResults = () => {
 </script>
 
 <template>
-    <div class="mt-5 mx-auto text-black">
+    <div class="mt-5 mx-auto text-black ">
         <div class="px-8 relative">
             <input v-model="searchQuery" @input="getSearchResults"
-                class="py-2 px-2 w-full bg-transparent border-b focus:outline-none focus:border-gray-200 focus:shadow-[0px_1px_0_0_#adb5bd]"
+                class="py-2 px-2 w-full text-white bg-transparent border-b focus:outline-none focus:border-gray-200 focus:shadow-[0px_1px_0_0_#adb5bd]"
                 type="text" placeholder="Search" />
             <div v-if="status.pending">Loading...</div>
             <div class="py-2 text-white" v-if="status.error">

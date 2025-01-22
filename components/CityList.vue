@@ -57,9 +57,9 @@ getCities();
   <div class="mx-6 h-screen">
     <!-- Show a loader while fetching data -->
     <div v-if="isLoading">
-      <CitycardSkeleton/>
+      <CitycardSkeleton />
     </div>
-    <div v-else>
+    <div v-else class="grid grid-cols-2 gap-3">
       <NuxtLink :to="{ path: `/cityview/${city.weather.name}`,
          query: { 
           id: city.id,

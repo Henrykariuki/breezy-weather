@@ -3,7 +3,7 @@
 </script>
 
 <template>
-    <div>
+    <div class="bg-[url('/images/pexels02.jpg')] bg-cover bg-center">
         <MyHeader />
         <div class="text-white">
             <slot />

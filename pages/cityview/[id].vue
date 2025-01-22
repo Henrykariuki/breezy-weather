@@ -90,6 +90,7 @@ const computedWeatherData = computed(() => {
         feelsLike: feelsLikeInCelcius,
         windSpeed: weatherData.value.current.wind_speed,
         humidity: weatherData.value.current.humidity,
+        mainDescription: weatherData.value.current.weather[0].main,
         formattedDate,
         formattedTime,
         hourly: hourlyData,
@@ -138,24 +139,35 @@ console.log(weatherData)
 </script>
 
 <template>
-    <div class=" grid grid-cols-4 bg-[url('/images/pexels02.jpg')] bg-cover bg-center">
-        <div class="col-span-3 p-5 flex justify-center items-end ">
-            <div class=" py-5 border border-black flex flex-row gap-4 overflow-x-auto">
-                <h2 class="text-lg font-bold mb-4">Hourly Forecast</h2>
+    <div class=" grid grid-cols-4 pt-1">
+        <div class="col-span-3 px-5 flex flex-col justify-end ">
+            <div class="w-full text-center py-4 mt-6 bg-gray-100 text-black mb-60" v-if="route.query.preview">
+                <p>You are currently viewing this city. Click the "+" icon to start tracking it.</p>
+            </div>
+            <p class="bg-clip-text text-transparent bg-gradient-to-l from-slate-500 to-yellow-500 
+             text-right mb-10 text-8xl font-semibold">
+                {{ computedWeatherData.mainDescription }}
+            </p>
+            <div class="scrollable-container py-6 border-t border-slate-300 flex flex-row gap-4 overflow-x-auto">
                 <div class="flex flex-col gap-1 items-center py-2 px-3 bg-white/10 backdrop-blur-sm rounded-md"
-                 v-for="hour in computedWeatherData.hourly" :key="hour.time">
+                    v-for="hour in computedWeatherData.hourly" :key="hour.time">
                     <p class="text-sm">{{ hour.time }}</p>
                     <img class="w-[50px]" :src="hour.icon" :alt="hour.description">
                     <p class="text-sm font-semibold">{{ Math.round(hour.temperature) }}°C</p>
                 </div>
             </div>
+            <div v-if="!route.query.preview" class=" mb-4 text-lg duration-150 text-center mt-5 p-2 w-48 
+             bg-gradient-to-r from-slate-500 to-green-500 hover:from-red-500 hover:to-yellow-500" @click="removeCity">
+                Remove city
+            </div>
         </div>
-        <div class=" border border-black backdrop-blur-sm bg-white/10">
-            <div class="flex flex-col items-center justify-center border border-slate-300 h-40">
+        <div class="px-5 backdrop-blur-sm bg-white/10">
+            <div class="flex flex-col gap-2 items-center justify-center border-b border-slate-300 mb-5 h-40">
+                <p class="text-lg">{{ route.params.id }}</p>
                 <p class="text-7xl ">{{ Math.round(computedWeatherData.temperature)}}°C</p>
                 <p class="text-sm font-semibold"> Feels Like: {{ Math.round(computedWeatherData.feelsLike) }}</p>
             </div>
-            <div class="flex flex-col gap-5 items-center h-[500px] overflow-y-auto">
+            <div class="scrollable-container flex flex-col gap-5 items-center h-[500px] overflow-y-auto">
                 <h2 class="font-semibold">Daily Forecast</h2>
                 <div class="flex flex-row gap-4" v-for="day in computedWeatherData.daily" :key="data.time">
                     <div class=" rounded-md backdrop-blur-sm bg-white/10">
@@ -165,7 +177,7 @@ console.log(weatherData)
                         <p class="text-sm">{{ day.time }}</p>
                         <p class="text-sm">{{ day.description }}</p>
                     </div>
-                    <div class="border-l px-2 border-slate-300">
+                    <div class="border-l flex flex-col justify-between px-2 border-slate-300">
                         <p class="text-sm font-semibold">{{ Math.round(day.maxTemp) }}°</p>
                         <p class="text-sm font-semibold">{{ Math.round(day.minTemp) }}°</p>
                     </div>
@@ -174,3 +186,43 @@ console.log(weatherData)
         </div>
     </div>
 </template>
+<style scoped>
+ /* Custom scrollbar */
+ .scrollable-container::-webkit-scrollbar {
+     width: 12px;
+     /* Wider for easier interaction */
+ }
+
+ .scrollable-container::-webkit-scrollbar-track {
+     background: #f3f4f6;
+     /* Soft background for the track */
+     border-radius: 10px;
+     /* Rounded track */
+     box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
+     /* Slight shadow for depth */
+ }
+
+ .scrollable-container::-webkit-scrollbar-thumb {
+     background: linear-gradient(45deg, #ff7eb3, #ff758c);
+     /* Soft, vibrant gradient */
+     border-radius: 10px;
+     /* Fully rounded scrollbar thumb */
+     border: 3px solid #f3f4f6;
+     /* Adds spacing between thumb and track */
+     transition: background 0.3s ease, border-color 0.3s ease;
+     /* Smooth hover effect */
+ }
+
+ .scrollable-container::-webkit-scrollbar-thumb:hover {
+     background: linear-gradient(45deg, #ff5470, #ff3366);
+     /* Darker gradient on hover */
+     border-color: #e2e8f0;
+     /* Subtle track color change */
+ }
+
+ /* Scrollbar corner (visible in two-dimensional scrolling) */
+ .scrollable-container::-webkit-scrollbar-corner {
+     background: #f3f4f6;
+     /* Match the track color */
+ }
+</style>

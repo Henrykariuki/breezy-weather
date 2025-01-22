@@ -13,7 +13,7 @@ const minTempInCelcius = (city) => city.weather.main.temp_min - 273.15
 </script>
 
 <template>
-    <div class="text-white p-4 flex justify-between lg:w-1/2 bg-slate-500 rounded-md mt-5">
+    <div class="text-white p-4 flex justify-between bg-white/20 backdrop-blur-sm rounded-md mt-5">
         <div class="flex items-center">
             <p>{{ city.city }}</p>
         </div>
