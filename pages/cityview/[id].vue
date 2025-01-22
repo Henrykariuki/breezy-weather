@@ -139,13 +139,21 @@ console.log(weatherData)
 </script>
 
 <template>
-    <div class=" grid grid-cols-4 pt-1">
-        <div class="col-span-3 px-5 flex flex-col justify-end ">
+    <div class=" grid grid-cols-1 md:grid-cols-4 py-1 ">
+        <div class="col-span-3 px-5 gap-12 md:gap-0 flex flex-col justify-end ">
             <div class="w-full text-center py-4 mt-6 bg-gray-100 text-black mb-60" v-if="route.query.preview">
                 <p>You are currently viewing this city. Click the "+" icon to start tracking it.</p>
             </div>
+            <div class=" md:hidden flex flex-col gap-2  justify-center  mb-5 h-40">
+                <div class="flex justify-between items-center">
+                    <p class="text-7xl ">{{ Math.round(computedWeatherData.temperature) }}°C</p>
+                    <img class="w-[120px]" :src="computedWeatherData.iconUrl" :alt="computedWeatherData.weatherDescription">
+                </div>
+                <p class="text-2xl">{{ route.params.id }}</p>
+                <p class="text-sm font-semibold"> Feels Like: {{ Math.round(computedWeatherData.feelsLike) }}</p>
+            </div>
             <p class="bg-clip-text text-transparent bg-gradient-to-l from-slate-500 to-yellow-500 
-             text-right mb-10 text-8xl font-semibold">
+             md:text-right md:mb-10 text-8xl font-semibold">
                 {{ computedWeatherData.mainDescription }}
             </p>
             <div class="scrollable-container py-6 border-t border-slate-300 flex flex-row gap-4 overflow-x-auto">
@@ -156,18 +164,20 @@ console.log(weatherData)
                     <p class="text-sm font-semibold">{{ Math.round(hour.temperature) }}°C</p>
                 </div>
             </div>
-            <div v-if="!route.query.preview" class=" mb-4 text-lg duration-150 text-center mt-5 p-2 w-48 
-             bg-gradient-to-r from-slate-500 to-green-500 hover:from-red-500 hover:to-yellow-500" @click="removeCity">
+            <div v-if="!route.query.preview" class=" hidden md:block mb-4 text-lg duration-150 text-center mt-5 p-2 w-48 
+             bg-gradient-to-r from-slate-500 to-green-500 
+             hover:from-red-500 hover:to-yellow-500 rounded-md" @click="removeCity">
                 Remove city
             </div>
         </div>
-        <div class="px-5 backdrop-blur-sm bg-white/10">
-            <div class="flex flex-col gap-2 items-center justify-center border-b border-slate-300 mb-5 h-40">
+        <div class="md:px-5 backdrop-blur-sm bg-white/10">
+            <div
+                class="hidden md:block flex flex-col gap-2 items-center justify-center border-b border-slate-300 mb-5 h-40">
                 <p class="text-lg">{{ route.params.id }}</p>
                 <p class="text-7xl ">{{ Math.round(computedWeatherData.temperature)}}°C</p>
                 <p class="text-sm font-semibold"> Feels Like: {{ Math.round(computedWeatherData.feelsLike) }}</p>
             </div>
-            <div class="scrollable-container flex flex-col gap-5 items-center h-[500px] overflow-y-auto">
+            <div class="scrollable-container flex flex-col gap-5 mt-20 md:mt-0 lg:items-center px-5 lg:px-0 h-[500px] overflow-y-auto">
                 <h2 class="font-semibold">Daily Forecast</h2>
                 <div class="flex flex-row gap-4" v-for="day in computedWeatherData.daily" :key="data.time">
                     <div class=" rounded-md backdrop-blur-sm bg-white/10">
@@ -182,6 +192,11 @@ console.log(weatherData)
                         <p class="text-sm font-semibold">{{ Math.round(day.minTemp) }}°</p>
                     </div>
                 </div>
+            </div>
+            <div v-if="!route.query.preview" class=" md:hidden ml-5 mb-4 text-lg duration-150 text-center mt-5 p-2 w-48 
+             bg-gradient-to-r from-slate-500 to-green-500 
+             hover:from-red-500 hover:to-yellow-500 rounded-md" @click="removeCity">
+                Remove city
             </div>
         </div>
     </div>
