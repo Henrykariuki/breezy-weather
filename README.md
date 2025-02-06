@@ -103,14 +103,8 @@ const router = useRouter()
 const removeCity = () => {
     const savedCities = JSON.parse(localStorage.getItem('savedCities'));
 
-    // Log the current state of saved cities
-    console.log('Saved Cities Before Removal:', savedCities);
-
     // Retrieve the city ID from the query parameter
     const cityIdToRemove = route.query.id;
-
-    // Log the city ID to remove
-    console.log('City ID to Remove:', cityIdToRemove);
 
     // Validate the city ID
     if (!cityIdToRemove) {
@@ -121,14 +115,9 @@ const removeCity = () => {
     // Filter out the city with the matching ID (use string comparison)
     const updatedCities = savedCities.filter((city) => city.id !== cityIdToRemove);
 
-    // Log the updated list of cities
-    console.log('Updated Cities After Removal:', updatedCities);
 
     // Update localStorage with the new list
     localStorage.setItem('savedCities', JSON.stringify(updatedCities));
-
-    // Log the updated state of localStorage
-    console.log('Saved Cities in Local Storage:', JSON.parse(localStorage.getItem('savedCities')));
 
     // Redirect the user to the home page
     router.push('/');

@@ -122,14 +122,8 @@ const removeCity = () => {
     // Filter out the city with the matching ID (use string comparison)
     const updatedCities = savedCities.filter((city) => city.id !== cityIdToRemove);
 
-    // Log the updated list of cities
-    console.log('Updated Cities After Removal:', updatedCities);
-
     // Update localStorage with the new list
     localStorage.setItem('savedCities', JSON.stringify(updatedCities));
-
-    // Log the updated state of localStorage
-    console.log('Saved Cities in Local Storage:', JSON.parse(localStorage.getItem('savedCities')));
 
     // Redirect the user to the home page
     router.push('/');
@@ -139,69 +133,92 @@ console.log(weatherData)
 </script>
 
 <template>
-    <div class=" grid grid-cols-1 md:grid-cols-4 py-1 ">
-        <div class="col-span-3 px-5 gap-12 md:gap-0 flex flex-col justify-end ">
-            <div class="w-full text-center py-4 mt-6 bg-gray-100 text-black mb-60" v-if="route.query.preview">
+    <Transition name="effect-outer">
+        <div>
+            <div class="w-full text-center py-4 mt-6 bg-gray-100 text-black " v-if="route.query.preview">
                 <p>You are currently viewing this city. Click the "+" icon to start tracking it.</p>
             </div>
-            <div class=" md:hidden flex flex-col gap-2  justify-center  mb-5 h-40">
-                <div class="flex justify-between items-center">
-                    <p class="text-7xl ">{{ Math.round(computedWeatherData.temperature) }}°C</p>
-                    <img class="w-[120px]" :src="computedWeatherData.iconUrl" :alt="computedWeatherData.weatherDescription">
+            <!-- Show error if exists -->
+            <div v-if="error">{{ error }}</div>
+            <div class=" grid grid-cols-1 md:grid-cols-4 py-5 p md:pr-5">
+
+                <div class="col-span-3 px-5 gap-12 md:gap-0 flex flex-col justify-end ">
+                    <div class=" md:hidden flex flex-col gap-2  justify-center  mb-5 h-40">
+                        <div class="flex justify-between items-center">
+                            <p class="text-7xl ">{{ Math.round(computedWeatherData.temperature) }}°C</p>
+                            <img class="w-[120px]" :src="computedWeatherData.iconUrl"
+                                :alt="computedWeatherData.weatherDescription">
+                        </div>
+                        <p class="text-2xl">{{ route.params.id }}</p>
+                        <p class="text-sm font-semibold"> Feels Like: {{ Math.round(computedWeatherData.feelsLike) }}
+                        </p>
+                    </div>
+                    <p class="bg-clip-text text-transparent bg-gradient-to-l from-slate-500 to-yellow-500 
+                    md:text-right md:mb-10 text-8xl font-semibold">
+                        {{ computedWeatherData.mainDescription }}
+                    </p>
+                    <div
+                        class="scrollable-container py-6 border-t border-slate-300 flex flex-row gap-4 overflow-x-auto">
+                        <div class="flex flex-col gap-1 items-center py-2 px-3 bg-white/10 backdrop-blur-sm rounded-md"
+                            v-for="hour in computedWeatherData.hourly" :key="hour.time">
+                            <p class="text-sm">{{ hour.time }}</p>
+                            <img class="w-[50px]" :src="hour.icon" :alt="hour.description">
+                            <p class="text-sm font-semibold">{{ Math.round(hour.temperature) }}°C</p>
+                        </div>
+                    </div>
+                    <div v-if="!route.query.preview" class=" hidden md:block mb-4 text-lg duration-150 text-center mt-5 p-2 w-48 
+                    bg-gradient-to-r from-slate-500 to-green-500 
+                    hover:from-red-500 hover:to-yellow-500 rounded-md" @click="removeCity">
+                        Remove city
+                    </div>
                 </div>
-                <p class="text-2xl">{{ route.params.id }}</p>
-                <p class="text-sm font-semibold"> Feels Like: {{ Math.round(computedWeatherData.feelsLike) }}</p>
-            </div>
-            <p class="bg-clip-text text-transparent bg-gradient-to-l from-slate-500 to-yellow-500 
-             md:text-right md:mb-10 text-8xl font-semibold">
-                {{ computedWeatherData.mainDescription }}
-            </p>
-            <div class="scrollable-container py-6 border-t border-slate-300 flex flex-row gap-4 overflow-x-auto">
-                <div class="flex flex-col gap-1 items-center py-2 px-3 bg-white/10 backdrop-blur-sm rounded-md"
-                    v-for="hour in computedWeatherData.hourly" :key="hour.time">
-                    <p class="text-sm">{{ hour.time }}</p>
-                    <img class="w-[50px]" :src="hour.icon" :alt="hour.description">
-                    <p class="text-sm font-semibold">{{ Math.round(hour.temperature) }}°C</p>
+                <div class="md:px-5 backdrop-blur-sm bg-white/10 rounded-md">
+                    <div
+                        class="hidden md:block flex flex-col gap-2 items-center justify-center border-b border-slate-300 mb-5 h-40">
+                        <p class="text-lg">{{ route.params.id }}</p>
+                        <p class="text-7xl ">{{ Math.round(computedWeatherData.temperature) }}°C</p>
+                        <p class="text-sm font-semibold"> Feels Like: {{ Math.round(computedWeatherData.feelsLike) }}
+                        </p>
+                    </div>
+                    <div
+                        class="scrollable-container flex flex-col gap-5 mt-20 md:mt-0 lg:items-center px-5 lg:px-0 h-[500px] overflow-y-auto">
+                        <h2 class="font-semibold">Daily Forecast</h2>
+                        <div class="flex flex-row gap-4" v-for="day in computedWeatherData.daily" :key="data.time">
+                            <div class=" rounded-md backdrop-blur-sm bg-white/10">
+                                <img class="w-[50px]" :src="day.icon" :alt="day.description">
+                            </div>
+                            <div class="text-start w-40">
+                                <p class="text-sm">{{ day.time }}</p>
+                                <p class="text-sm">{{ day.description }}</p>
+                            </div>
+                            <div class="border-l flex flex-col justify-between px-2 border-slate-300">
+                                <p class="text-sm font-semibold">{{ Math.round(day.maxTemp) }}°</p>
+                                <p class="text-sm font-semibold">{{ Math.round(day.minTemp) }}°</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div v-if="!route.query.preview" class=" md:hidden ml-5 mb-4 text-lg duration-150 text-center mt-5 p-2 w-48 
+                    bg-gradient-to-r from-slate-500 to-green-500 
+                    hover:from-red-500 hover:to-yellow-500 rounded-md" @click="removeCity">
+                        Remove city
+                    </div>
                 </div>
-            </div>
-            <div v-if="!route.query.preview" class=" hidden md:block mb-4 text-lg duration-150 text-center mt-5 p-2 w-48 
-             bg-gradient-to-r from-slate-500 to-green-500 
-             hover:from-red-500 hover:to-yellow-500 rounded-md" @click="removeCity">
-                Remove city
             </div>
         </div>
-        <div class="md:px-5 backdrop-blur-sm bg-white/10">
-            <div
-                class="hidden md:block flex flex-col gap-2 items-center justify-center border-b border-slate-300 mb-5 h-40">
-                <p class="text-lg">{{ route.params.id }}</p>
-                <p class="text-7xl ">{{ Math.round(computedWeatherData.temperature)}}°C</p>
-                <p class="text-sm font-semibold"> Feels Like: {{ Math.round(computedWeatherData.feelsLike) }}</p>
-            </div>
-            <div class="scrollable-container flex flex-col gap-5 mt-20 md:mt-0 lg:items-center px-5 lg:px-0 h-[500px] overflow-y-auto">
-                <h2 class="font-semibold">Daily Forecast</h2>
-                <div class="flex flex-row gap-4" v-for="day in computedWeatherData.daily" :key="data.time">
-                    <div class=" rounded-md backdrop-blur-sm bg-white/10">
-                        <img class="w-[50px]" :src="day.icon" :alt="day.description">
-                    </div>
-                    <div class="text-start w-40">
-                        <p class="text-sm">{{ day.time }}</p>
-                        <p class="text-sm">{{ day.description }}</p>
-                    </div>
-                    <div class="border-l flex flex-col justify-between px-2 border-slate-300">
-                        <p class="text-sm font-semibold">{{ Math.round(day.maxTemp) }}°</p>
-                        <p class="text-sm font-semibold">{{ Math.round(day.minTemp) }}°</p>
-                    </div>
-                </div>
-            </div>
-            <div v-if="!route.query.preview" class=" md:hidden ml-5 mb-4 text-lg duration-150 text-center mt-5 p-2 w-48 
-             bg-gradient-to-r from-slate-500 to-green-500 
-             hover:from-red-500 hover:to-yellow-500 rounded-md" @click="removeCity">
-                Remove city
-            </div>
-        </div>
-    </div>
+    </Transition>
 </template>
 <style scoped>
+.effect-outer-enter-active,
+.effect-outer-leave-active {
+    transition: opacity 0.5s ease-in-out;
+}
+
+.effect-outer-enter-from,
+.effect-outer-leave-to {
+    opacity: 0;
+}
+
+
  /* Custom scrollbar */
  .scrollable-container::-webkit-scrollbar {
      width: 12px;

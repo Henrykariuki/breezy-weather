@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <div >
+  <div>
     <NuxtLoadingIndicator />
     <NuxtLayout>
       <Transition name="page">
@@ -16,7 +16,7 @@
 <style scoped>
 .page-enter-active,
 .page-leave-active {
-  transition: 600ms ease all;
+  transition: opacity 0.5s ease-in-out;
 }
 
 .page-enter-from,

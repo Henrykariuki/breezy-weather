@@ -1,5 +1,5 @@
 <script setup>
-import { Sun, CircleAlert, Plus } from 'lucide-vue-next';
+import { Sun, CircleAlert, Plus, ArrowLeft } from 'lucide-vue-next';
 import { uid } from 'uid';
 
 
@@ -35,16 +35,22 @@ const addCity = () => {
     router.replace({query})
 }
 
+const goBack = () => {
+    router.go(-1)
+}
 </script>
 
 <template>
     <div class="text-white flex justify-around py-4 relative  bg-black"
         style="box-shadow: 0 4px 10px rgba(0, 0, 0, 0.8);">
-        <div class="flex flex-row gap-2">
+        <button @click="goBack" class="hover:text-green-300 transition duration-150">
+            <ArrowLeft />
+        </button>
+        <div class="flex flex-row gap-2 hover:text-green-300 transition duration-150">
             <Sun />
             <NuxtLink to="/">Breezy Weather</NuxtLink>
         </div>
-        <div class="flex flex-row gap-2">
+        <div class="flex flex-row gap-2 hover:text-green-300 transition duration-150">
             <div @click="toggleModule">
                 <CircleAlert />
             </div>
@@ -52,7 +58,7 @@ const addCity = () => {
                 <Plus />
             </div>
         </div>
-        <div class="absolute rounded-sm top-32 text-black z-50 bg-white/20 backdrop-blur-sm">
+        <div class="absolute rounded-sm top-32 text-black z-50 bg-[#f2f0ef]">
             <AboutModal :modalActive="modalActive" @closeModal="toggleModule">
                 <div>
                     <div>
