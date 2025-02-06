@@ -26,7 +26,7 @@ const getSearchResults = () => {
             // Access features array from the response data
             results.value = data.value?.features || []
 
-            // If no results, show the message and hide it after 3 seconds
+            // If no results, show the message and hide it after 2 seconds
             if(results.value.length === 0) {
                 showNoResultsMessage.value = true
                 setTimeout(() => {

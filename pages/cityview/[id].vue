@@ -16,7 +16,7 @@ const ShowSkeleton = ref(true)
 //Set a delay to display skeleton for a minum time
 setTimeout(() => {
     ShowSkeleton.value = false
-}, 1000)
+}, 10000)
 
 const isWeatherDataPopulated = computed(() => weatherData.value)
 
@@ -138,10 +138,12 @@ console.log(weatherData)
             <div class="w-full text-center py-4 mt-6 bg-gray-100 text-black " v-if="route.query.preview">
                 <p>You are currently viewing this city. Click the "+" icon to start tracking it.</p>
             </div>
+            <div v-if="ShowSkeleton">
+                <CityViewSkeleton/>
+            </div>
             <!-- Show error if exists -->
             <div v-if="error">{{ error }}</div>
-            <div class=" grid grid-cols-1 md:grid-cols-4 py-5 p md:pr-5">
-
+            <div class=" grid grid-cols-1 md:grid-cols-4 py-5 p md:pr-5" v-else-if="computedWeatherData && !ShowSkeleton">
                 <div class="col-span-3 px-5 gap-12 md:gap-0 flex flex-col justify-end ">
                     <div class=" md:hidden flex flex-col gap-2  justify-center  mb-5 h-40">
                         <div class="flex justify-between items-center">

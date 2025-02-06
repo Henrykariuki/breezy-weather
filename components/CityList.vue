@@ -55,9 +55,9 @@ getCities();
 
 <template>
   <div class="mx-6 h-screen">
-    <!-- Show a loader while fetching data -->
-    <div v-if="isLoading">
-      <CitycardSkeleton />
+    <!-- Show skeleton while fetching data -->
+    <div class="grid md:grid-cols-2 gap-3 " v-if="isLoading">
+      <CitycardSkeleton v-for="i in 6" />
     </div>
     <div v-else class="grid md:grid-cols-2 gap-3">
       <NuxtLink :to="{ path: `/cityview/${city.weather.name}`,

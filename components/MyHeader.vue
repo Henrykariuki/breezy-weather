@@ -46,9 +46,9 @@ const goBack = () => {
         <button @click="goBack" class="hover:text-green-300 transition duration-150">
             <ArrowLeft />
         </button>
-        <div class="flex flex-row gap-2 hover:text-green-300 transition duration-150">
+        <div class="flex flex-row gap-2">
             <Sun />
-            <NuxtLink to="/">Breezy Weather</NuxtLink>
+            <NuxtLink>Breezy Weather</NuxtLink>
         </div>
         <div class="flex flex-row gap-2 hover:text-green-300 transition duration-150">
             <div @click="toggleModule">
