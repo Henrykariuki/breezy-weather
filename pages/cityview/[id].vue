@@ -16,7 +16,7 @@ const ShowSkeleton = ref(true)
 //Set a delay to display skeleton for a minum time
 setTimeout(() => {
     ShowSkeleton.value = false
-}, 10000)
+}, 1000)
 
 const isWeatherDataPopulated = computed(() => weatherData.value)
 
